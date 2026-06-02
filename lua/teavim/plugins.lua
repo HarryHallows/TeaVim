@@ -59,15 +59,14 @@ local specs = {
   -- Treesitter syntax highlighting
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "typescript",
-                             "python", "rust", "go", "html", "css", "json",
-                             "bash", "markdown", "markdown_inline" },
-        highlight = { enable = true },
-        indent    = { enable = true },
-      })
-    end,
+    main = "nvim-treesitter.config",
+    opts = {
+      ensure_installed = { "lua", "vim", "vimdoc", "javascript", "typescript",
+                           "python", "rust", "go", "html", "css", "json",
+                           "bash", "markdown", "markdown_inline" },
+      highlight = { enable = true },
+      indent    = { enable = true },
+    },
   },
 }
 
