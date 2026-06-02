@@ -131,43 +131,60 @@ function M.run()
 
   vim.notify("TeaVim: checking for updates…", vim.log.levels.INFO)
 
-  -- Capture the version before pulling.
   current_version(dir, function(before)
-    git({ "pull", "--ff-only" }, dir, function(code, out, err)
-      if code ~= 0 then
-        local msg = table.concat(err, "\n"):gsub("%s+$", "")
-        vim.schedule(function()
-          vim.notify("TeaVim update failed:\n" .. msg, vim.log.levels.ERROR)
-        end)
-        return
-      end
+    -- Stash any local changes (tracked + untracked) so the pull can proceed.
+    git({ "stash", "push", "--include-untracked", "-m", "teavim-update-stash" }, dir,
+      function(stash_code, stash_out)
+        local stashed = stash_code == 0
+          and not table.concat(stash_out, ""):find("No local changes")
 
-      local pull_output = table.concat(out, "\n")
-
-      -- Already up to date — still offer to show changelog.
-      if pull_output:find("Already up to date") then
-        vim.schedule(function()
-          vim.notify("TeaVim: already up to date (v" .. before .. ").", vim.log.levels.INFO)
-          local changelog = parse_changelog(dir .. "/CHANGELOG.md")
-          if #changelog > 0 then
-            show_changelog(changelog, before)
+        git({ "pull", "--ff-only" }, dir, function(code, out, err)
+          local function restore_stash(cb)
+            if stashed then
+              git({ "stash", "pop" }, dir, function() if cb then cb() end end)
+            else
+              if cb then cb() end
+            end
           end
-        end)
-        return
-      end
 
-      -- Something was pulled — get the new version.
-      current_version(dir, function(after)
-        vim.schedule(function()
-          vim.notify(
-            string.format("TeaVim: updated v%s → v%s. Reload Neovim to apply.", before, after),
-            vim.log.levels.INFO
-          )
-          local changelog = parse_changelog(dir .. "/CHANGELOG.md")
-          show_changelog(changelog, after)
+          if code ~= 0 then
+            local msg = table.concat(err, "\n"):gsub("%s+$", "")
+            restore_stash(function()
+              vim.schedule(function()
+                vim.notify("TeaVim update failed:\n" .. msg, vim.log.levels.ERROR)
+              end)
+            end)
+            return
+          end
+
+          local pull_output = table.concat(out, "\n")
+
+          if pull_output:find("Already up to date") then
+            restore_stash(function()
+              vim.schedule(function()
+                vim.notify("TeaVim: already up to date (v" .. before .. ").", vim.log.levels.INFO)
+                local changelog = parse_changelog(dir .. "/CHANGELOG.md")
+                if #changelog > 0 then show_changelog(changelog, before) end
+              end)
+            end)
+            return
+          end
+
+          -- Something was pulled — restore stash then report.
+          restore_stash(function()
+            current_version(dir, function(after)
+              vim.schedule(function()
+                vim.notify(
+                  string.format("TeaVim: updated v%s → v%s. Reload Neovim to apply.", before, after),
+                  vim.log.levels.INFO
+                )
+                local changelog = parse_changelog(dir .. "/CHANGELOG.md")
+                show_changelog(changelog, after)
+              end)
+            end)
+          end)
         end)
       end)
-    end)
   end)
 end
 
