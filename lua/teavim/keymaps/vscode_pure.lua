@@ -51,7 +51,7 @@ map("v", "<C-/>",
 if TeaVim.features.fuzzy then
   map({ "n", "i" }, "<C-p>",   "<cmd>Telescope find_files<cr>",  { desc = "Find files" })
   map({ "n", "i" }, "<C-S-f>", "<cmd>Telescope live_grep<cr>",   { desc = "Find in project" })
-  map({ "n", "i" }, "<C-S-p>", "<cmd>Telescope commands<cr>",    { desc = "Command palette" })
+  map({ "n", "i" }, "<C-S-p>", function() require("teavim.ui.palette").open() end, { desc = "Command palette" })
   map({ "n", "i" }, "<C-Tab>", "<cmd>Telescope buffers<cr>",     { desc = "Switch buffer" })
 end
 

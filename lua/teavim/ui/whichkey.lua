@@ -14,6 +14,7 @@ wk.setup({
 wk.add({
   { "<leader>b", group = "Buffers" },
   { "<leader>f", group = "Find (fuzzy)" },
+  { "<leader>p", group = "Command palette" },
   { "<leader>g", group = "Git" },
   { "<leader>l", group = "LSP" },
   { "<leader>t", group = "Terminal" },
@@ -31,3 +32,7 @@ map("n", "<leader>uw", "<cmd>set wrap!<cr>",           { desc = "Toggle line wra
 map("n", "<leader>ut", function()
   require("teavim.ui.themes").open()
 end, { desc = "Theme picker" })
+
+map("n", "<leader>p", function()
+  require("teavim.ui.palette").open()
+end, { desc = "Command palette" })

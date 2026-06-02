@@ -57,7 +57,7 @@ if TeaVim.features.fuzzy then
   -- Ctrl+Shift+F: search in project
   map({ "n", "i" }, "<C-S-f>",     "<cmd>Telescope live_grep<cr>",    { desc = "Find in project" })
   -- Ctrl+Shift+P: command palette
-  map({ "n", "i" }, "<C-S-p>",     "<cmd>Telescope commands<cr>",     { desc = "Command palette" })
+  map({ "n", "i" }, "<C-S-p>", function() require("teavim.ui.palette").open() end, { desc = "Command palette" })
   -- Ctrl+Tab: switch buffers
   map({ "n", "i" }, "<C-Tab>",     "<cmd>Telescope buffers<cr>",      { desc = "Switch buffer" })
 
