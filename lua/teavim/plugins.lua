@@ -4,13 +4,28 @@
 local cfg = TeaVim
 
 local specs = {
-  -- ── Always-on UI ──────────────────────────────────────────────────────────
-  { "folke/tokyonight.nvim", lazy = false, priority = 1000,
-    config = function() vim.cmd("colorscheme tokyonight-night") end },
+  -- ── Colorschemes (active one eager-loaded, rest lazy) ────────────────────
+  { "folke/tokyonight.nvim",      lazy = cfg.theme ~= nil and not cfg.theme:find("tokyonight"), priority = 1000 },
+  { "catppuccin/nvim",            lazy = cfg.theme == nil or not cfg.theme:find("catppuccin"),  priority = 1000, name = "catppuccin" },
+  { "ellisonleao/gruvbox.nvim",   lazy = cfg.theme ~= "gruvbox",    priority = 1000 },
+  { "rose-pine/neovim",           lazy = cfg.theme == nil or not cfg.theme:find("rose%-pine"), priority = 1000, name = "rose-pine" },
+  { "rebelot/kanagawa.nvim",      lazy = cfg.theme == nil or not cfg.theme:find("kanagawa"),   priority = 1000 },
+  { "shaunsingh/nord.nvim",       lazy = cfg.theme ~= "nord",        priority = 1000 },
+  { "Mofiqul/dracula.nvim",       lazy = cfg.theme ~= "dracula",     priority = 1000 },
+  { "olimorris/onedarkpro.nvim",  lazy = cfg.theme ~= "onedark",     priority = 1000 },
 
+  {
+    -- Applies the active colorscheme after all theme plugins load.
+    dir = vim.fn.stdpath("config"), name = "teavim-theme", lazy = false, priority = 999,
+    config = function()
+      vim.cmd("colorscheme " .. (cfg.theme or "tokyonight-night"))
+    end,
+  },
+
+  -- ── Always-on UI ──────────────────────────────────────────────────────────
   { "nvim-lualine/lualine.nvim", event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = { options = { theme = "tokyonight" } } },
+    opts = { options = { theme = "auto" } } },
 
   -- Dashboard / splash screen
   { "goolord/alpha-nvim", event = "VimEnter",

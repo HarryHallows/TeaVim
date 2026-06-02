@@ -24,6 +24,10 @@ M.config = {
   -- Set to false to permanently suppress, "force" to always show.
   onboarding = true,
 
+  -- Colorscheme. Change via <Space>ut or set here directly.
+  -- See lua/teavim/ui/themes.lua for the full list of built-in options.
+  theme = "tokyonight-night",
+
   -- Leader key used across all profiles.
   leader = " ",
 }

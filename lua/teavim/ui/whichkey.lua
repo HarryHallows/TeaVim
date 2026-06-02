@@ -28,3 +28,6 @@ local map = vim.keymap.set
 map("n", "<leader>un", "<cmd>set number!<cr>",         { desc = "Toggle line numbers" })
 map("n", "<leader>ur", "<cmd>set relativenumber!<cr>", { desc = "Toggle relative numbers" })
 map("n", "<leader>uw", "<cmd>set wrap!<cr>",           { desc = "Toggle line wrap" })
+map("n", "<leader>ut", function()
+  require("teavim.ui.themes").open()
+end, { desc = "Theme picker" })
