@@ -10,29 +10,30 @@ wk.setup({
   win     = { border = "rounded" },
 })
 
--- Top-level group labels so the panel is readable at a glance.
-wk.add({
-  { "<leader>b", group = "Buffers" },
-  { "<leader>f", group = "Find (fuzzy)" },
-  { "<leader>p", group = "Command palette" },
-  { "<leader>g", group = "Git" },
-  { "<leader>l", group = "LSP" },
-  { "<leader>t", group = "Terminal" },
-  { "<leader>e", group = "Explorer" },
-  { "<leader>x", group = "Diagnostics" },
-  { "<leader>u", group = "UI toggles" },
-  { "<leader>U", group = "Update TeaVim" },
-})
-
--- UI toggles available in all profiles
+-- UI toggles and palette registered immediately — always available.
 local map = vim.keymap.set
 map("n", "<leader>un", "<cmd>set number!<cr>",         { desc = "Toggle line numbers" })
 map("n", "<leader>ur", "<cmd>set relativenumber!<cr>", { desc = "Toggle relative numbers" })
 map("n", "<leader>uw", "<cmd>set wrap!<cr>",           { desc = "Toggle line wrap" })
-map("n", "<leader>ut", function()
-  require("teavim.ui.themes").open()
-end, { desc = "Theme picker" })
+map("n", "<leader>ut", function() require("teavim.ui.themes").open() end,  { desc = "Theme picker" })
+map("n", "<leader>p",  function() require("teavim.ui.palette").open() end, { desc = "Command palette" })
 
-map("n", "<leader>p", function()
-  require("teavim.ui.palette").open()
-end, { desc = "Command palette" })
+-- Group labels deferred to VimEnter so all profile keymaps are already
+-- registered before which-key reads them.
+vim.api.nvim_create_autocmd("VimEnter", {
+  once     = true,
+  callback = function()
+    wk.add({
+      { "<leader>b", group = "Buffers" },
+      { "<leader>e", group = "Explorer" },
+      { "<leader>f", group = "Find" },
+      { "<leader>g", group = "Git" },
+      { "<leader>l", group = "LSP" },
+      { "<leader>p", group = "Command Palette" },
+      { "<leader>t", group = "Terminal" },
+      { "<leader>u", group = "UI" },
+      { "<leader>U", group = "Update TeaVim" },
+      { "<leader>x", group = "Diagnostics" },
+    })
+  end,
+})
