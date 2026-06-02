@@ -34,6 +34,28 @@ local server_configs = {
       },
     },
   },
+  pyright = {
+    settings = {
+      python = {
+        -- Auto-detect the venv in the project root or a backend/ subdirectory.
+        pythonPath = (function()
+          local cwd = vim.fn.getcwd()
+          for _, candidate in ipairs({
+            cwd .. "/.venv/bin/python",
+            cwd .. "/backend/.venv/bin/python",
+            cwd .. "/venv/bin/python",
+          }) do
+            if vim.fn.executable(candidate) == 1 then return candidate end
+          end
+        end)(),
+        analysis = {
+          autoSearchPaths    = true,
+          useLibraryCodeForTypes = true,
+          diagnosticMode     = "workspace",
+        },
+      },
+    },
+  },
 }
 
 mason_lsp.setup({
