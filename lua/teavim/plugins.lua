@@ -12,6 +12,11 @@ local specs = {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = { options = { theme = "tokyonight" } } },
 
+  -- Dashboard / splash screen
+  { "goolord/alpha-nvim", event = "VimEnter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function() require("teavim.ui.dashboard") end },
+
   -- which-key: discoverable shortcuts panel
   { "folke/which-key.nvim", event = "VeryLazy",
     config = function() require("teavim.ui.whichkey") end },
@@ -39,14 +44,15 @@ local specs = {
   -- Treesitter syntax highlighting
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
-    main  = "nvim-treesitter.configs",
-    opts  = {
-      ensure_installed = { "lua", "vim", "vimdoc", "javascript", "typescript",
-                           "python", "rust", "go", "html", "css", "json",
-                           "bash", "markdown", "markdown_inline" },
-      highlight = { enable = true },
-      indent    = { enable = true },
-    },
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "typescript",
+                             "python", "rust", "go", "html", "css", "json",
+                             "bash", "markdown", "markdown_inline" },
+        highlight = { enable = true },
+        indent    = { enable = true },
+      })
+    end,
   },
 }
 
@@ -113,5 +119,6 @@ end
 
 require("lazy").setup(specs, {
   ui = { border = "rounded" },
-  change_detection = { notify = false },
+  change_detection = { enabled = false, notify = false },
+  lockfile = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h:h:h") .. "/lazy-lock.json",
 })

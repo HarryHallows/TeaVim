@@ -27,6 +27,7 @@ o.completeopt    = { "menu", "menuone", "noselect" }
 o.mouse          = "a"
 o.showmode       = false  -- lualine shows mode instead
 o.laststatus     = 3      -- global statusline
+o.shortmess:append("I")  -- suppress default nvim intro screen
 
 vim.g.mapleader      = TeaVim.leader
 vim.g.maplocalleader = TeaVim.leader
