@@ -38,6 +38,12 @@ map("n", "N",     "Nzzzv",   { desc = "Prev search result (centred)" })
 -- Paste without clobbering register
 map("x", "<leader>p", [["_dP]], { desc = "Paste without yank" })
 
+-- ── Mouse ─────────────────────────────────────────────────────────────────────
+map({ "n", "i" }, "<C-LeftMouse>", function()
+  vim.api.nvim_input("<LeftMouse>")   -- move cursor to click position first
+  vim.lsp.buf.definition()
+end, { desc = "Ctrl+click: go to definition" })
+
 -- ── Lazy plugin manager ───────────────────────────────────────────────────────
 map("n", "<leader>L",  "<cmd>Lazy<cr>",       { desc = "Open Lazy plugin manager" })
 map("n", "<leader>lR", "<cmd>LspRestart<cr>", { desc = "Restart LSP" })
