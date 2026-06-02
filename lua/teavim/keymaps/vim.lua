@@ -24,6 +24,8 @@ if TeaVim.features.fuzzy then
 end
 
 if TeaVim.features.terminal then
+  map("n", "<leader>tm", function() require("teavim.ui.terminal").toggle() end, { desc = "Terminal manager" })
+  map("n", "<C-\\>",     function() require("teavim.ui.terminal").toggle() end, { desc = "Terminal manager" })
   map("n", "<leader>tt", "<cmd>ToggleTerm<cr>",                        { desc = "Toggle terminal" })
   map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>",        { desc = "Float terminal" })
   map("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>",   { desc = "Horizontal terminal" })
@@ -53,7 +55,8 @@ if TeaVim.features.lsp then
   map("n", "[d",         vim.diagnostic.goto_prev,         { desc = "Prev diagnostic" })
 end
 
--- Git (gitsigns)
+-- Git (gitsigns + source control modal)
+map("n", "<leader>gs", function() require("teavim.ui.git").open() end, { desc = "Source control" })
 map("n", "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>",   { desc = "Preview hunk" })
 map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>",     { desc = "Blame line" })
 map("n", "]h",         "<cmd>Gitsigns next_hunk<cr>",      { desc = "Next hunk" })

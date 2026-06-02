@@ -42,9 +42,10 @@ map("v", "<C-/>", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.v
 
 -- Close tab / buffer (Ctrl+W)
 map({ "n", "i" }, "<C-w>", function()
+  local cur  = vim.api.nvim_get_current_buf()
   local bufs = vim.fn.getbufinfo({ buflisted = 1 })
   if #bufs > 1 then vim.cmd("bprevious") end
-  vim.cmd("bdelete #")
+  vim.cmd("bdelete " .. cur)
 end, { desc = "Close buffer" })
 
 -- Split editor (Ctrl+\)
@@ -85,8 +86,9 @@ if TeaVim.features.explorer then
 end
 
 if TeaVim.features.terminal then
-  -- Ctrl+`: toggle terminal (matches VSCode)
   map({ "n", "i" }, "<C-`>",        "<cmd>ToggleTerm<cr>",                     { desc = "Toggle terminal" })
+  map({ "n", "i" }, "<C-S-`>",      function() require("teavim.ui.terminal").toggle() end, { desc = "Terminal manager" })
+  map("n",          "<leader>tm",   function() require("teavim.ui.terminal").toggle() end, { desc = "Terminal manager" })
   map("n",          "<leader>tt",   "<cmd>ToggleTerm<cr>",                     { desc = "Toggle terminal" })
   map("n",          "<leader>tf",   "<cmd>ToggleTerm direction=float<cr>",     { desc = "Float terminal" })
   map("n",          "<leader>th",   "<cmd>ToggleTerm direction=horizontal<cr>",{ desc = "Horizontal terminal" })
@@ -129,7 +131,9 @@ if TeaVim.features.lsp then
   map("n", "[d",         vim.diagnostic.goto_prev,      { desc = "Prev diagnostic" })
 end
 
--- Git (gitsigns)
+-- Git (gitsigns + source control modal)
+map({ "n", "i" }, "<C-S-g>", function() require("teavim.ui.git").open() end, { desc = "Source control" })
+map("n", "<leader>gs", function() require("teavim.ui.git").open() end,        { desc = "Source control" })
 map("n", "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>",  { desc = "Preview hunk" })
 map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>",    { desc = "Blame line" })
 map("n", "]h",         "<cmd>Gitsigns next_hunk<cr>",     { desc = "Next hunk" })
