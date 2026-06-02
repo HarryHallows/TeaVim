@@ -3,9 +3,10 @@
 -- Uncomment and edit what you need.
 
 return {
-  profile = "vscode_pure",       -- "vim" | "vscode" | "vscode_pure"
+  -- profile = "vscode",            -- "vim" | "vscode" | "vscode_pure"
+  -- theme   = "tokyonight-night",  -- see lua/teavim/ui/themes.lua for options
   -- leader  = " ",
-  -- onboarding = true,        -- false to suppress, "force" to always show
+  -- onboarding = true,             -- false to suppress, "force" to always show
 
   -- features = {
   --   explorer = true,
