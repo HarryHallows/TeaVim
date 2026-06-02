@@ -28,9 +28,26 @@ local specs = {
     opts = { options = { theme = "auto" } } },
 
   -- Dashboard / splash screen
-  { "goolord/alpha-nvim", event = "VimEnter",
+  { "goolord/alpha-nvim", lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function() require("teavim.ui.dashboard") end },
+    config = function()
+      require("teavim.ui.dashboard")
+      -- On first install lazy.nvim opens its UI over VimEnter. Once it's done,
+      -- open alpha so the TeaVim dashboard appears instead of a blank buffer.
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyDone",
+        once    = true,
+        callback = function()
+          -- Only open if we're still on an empty/unnamed buffer (first launch)
+          local buf = vim.api.nvim_get_current_buf()
+          local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+          local empty = vim.api.nvim_buf_get_name(buf) == "" and #lines <= 1 and (lines[1] or "") == ""
+          if empty then
+            require("alpha").start(true)
+          end
+        end,
+      })
+    end },
 
   -- which-key: discoverable shortcuts panel
   { "folke/which-key.nvim", event = "VeryLazy",
