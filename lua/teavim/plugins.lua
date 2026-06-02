@@ -148,6 +148,15 @@ if cfg.features.debug then
   })
 end
 
+if cfg.features.search then
+  table.insert(specs, {
+    "nvim-pack/nvim-spectre",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = "Spectre",
+    config = function() require("teavim.features.search") end,
+  })
+end
+
 -- ── User-defined extra plugins ────────────────────────────────────────────────
 local ok, user_plugins = pcall(require, "user.plugins")
 if ok and user_plugins then

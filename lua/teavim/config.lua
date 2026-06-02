@@ -19,6 +19,7 @@ M.config = {
     terminal  = true,   -- toggleterm: floating/split embedded terminal
     lsp       = true,   -- lspconfig + blink.cmp: language servers + completion
     debug     = true,   -- nvim-dap + dap-ui: breakpoints and step-through debugging
+    search    = true,   -- spectre   : project-wide find & replace
   },
 
   -- Onboarding – shown on first launch, skipped on subsequent ones.

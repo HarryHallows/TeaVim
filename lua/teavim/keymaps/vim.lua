@@ -13,14 +13,15 @@ if TeaVim.features.explorer then
 end
 
 if TeaVim.features.fuzzy then
-  map("n", "<leader>ff", "<cmd>Telescope find_files<cr>",              { desc = "Find files" })
-  map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>",               { desc = "Live grep" })
-  map("n", "<leader>fb", "<cmd>Telescope buffers<cr>",                 { desc = "Open buffers" })
-  map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>",               { desc = "Help tags" })
-  map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>",                { desc = "Recent files" })
-  map("n", "<leader>fc", "<cmd>Telescope commands<cr>",                { desc = "Commands" })
-  map("n", "<leader>fd", "<cmd>Telescope diagnostics<cr>",             { desc = "Diagnostics" })
-  map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>",   { desc = "Document symbols" })
+  map("n", "<leader>ff", "<cmd>Telescope find_files<cr>",                         { desc = "Find files" })
+  map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>",                           { desc = "Live grep" })
+  map("n", "<leader>fb", "<cmd>Telescope buffers<cr>",                             { desc = "Open buffers" })
+  map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>",                           { desc = "Help tags" })
+  map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>",                            { desc = "Recent files" })
+  map("n", "<leader>fc", "<cmd>Telescope commands<cr>",                            { desc = "Commands" })
+  map("n", "<leader>fd", "<cmd>Telescope diagnostics<cr>",                         { desc = "Diagnostics" })
+  map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>",                { desc = "Document symbols" })
+  map("n", "<leader>fw", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",       { desc = "Workspace symbols" })
 end
 
 if TeaVim.features.terminal then
@@ -39,20 +40,28 @@ if TeaVim.features.terminal then
   map("t", "<Esc><Esc>", "<C-\\><C-n>",                               { desc = "Exit terminal mode" })
 end
 
+if TeaVim.features.search then
+  map("n", "<leader>sr", function() require("spectre").open() end,                                { desc = "Find & replace in project" })
+  map("n", "<leader>sw", function() require("spectre").open_visual({ select_word = true }) end,   { desc = "Search current word" })
+  map("v", "<leader>sw", function() require("spectre").open_visual() end,                         { desc = "Search selection" })
+  map("n", "<leader>sf", function() require("spectre").open_file_search({ select_word = true }) end, { desc = "Search in current file" })
+end
+
 if TeaVim.features.lsp then
-  map("n", "<leader>la", vim.lsp.buf.code_action,          { desc = "Code action" })
-  map("n", "<leader>lr", vim.lsp.buf.rename,               { desc = "Rename symbol" })
-  map("n", "<leader>lf", vim.lsp.buf.format,               { desc = "Format file" })
-  map("n", "<leader>li", "<cmd>LspInfo<cr>",               { desc = "LSP info" })
-  map("n", "<leader>lm", "<cmd>Mason<cr>",                 { desc = "Open Mason" })
-  map("n", "gd",         vim.lsp.buf.definition,           { desc = "Go to definition" })
-  map("n", "gD",         vim.lsp.buf.declaration,          { desc = "Go to declaration" })
-  map("n", "gr",         vim.lsp.buf.references,           { desc = "References" })
-  map("n", "gi",         vim.lsp.buf.implementation,       { desc = "Go to implementation" })
-  map("n", "K",          vim.lsp.buf.hover,                { desc = "Hover docs" })
-  map("n", "<leader>xd", vim.diagnostic.open_float,        { desc = "Line diagnostics" })
-  map("n", "]d",         vim.diagnostic.goto_next,         { desc = "Next diagnostic" })
-  map("n", "[d",         vim.diagnostic.goto_prev,         { desc = "Prev diagnostic" })
+  map("n", "<leader>la", vim.lsp.buf.code_action,                        { desc = "Code action" })
+  map("n", "<leader>lr", vim.lsp.buf.rename,                             { desc = "Rename symbol" })
+  map("n", "<leader>lf", vim.lsp.buf.format,                             { desc = "Format file" })
+  map("n", "<leader>li", "<cmd>LspInfo<cr>",                             { desc = "LSP info" })
+  map("n", "<leader>lm", "<cmd>Mason<cr>",                               { desc = "Open Mason" })
+  map("n", "gd",         "<cmd>Telescope lsp_definitions<cr>",           { desc = "Go to definition" })
+  map("n", "gD",         vim.lsp.buf.declaration,                        { desc = "Go to declaration" })
+  map("n", "gr",         "<cmd>Telescope lsp_references<cr>",            { desc = "References" })
+  map("n", "gi",         "<cmd>Telescope lsp_implementations<cr>",       { desc = "Go to implementation" })
+  map("n", "gy",         "<cmd>Telescope lsp_type_definitions<cr>",      { desc = "Go to type definition" })
+  map("n", "K",          vim.lsp.buf.hover,                              { desc = "Hover docs" })
+  map("n", "<leader>xd", vim.diagnostic.open_float,                      { desc = "Line diagnostics" })
+  map("n", "]d",         vim.diagnostic.goto_next,                       { desc = "Next diagnostic" })
+  map("n", "[d",         vim.diagnostic.goto_prev,                       { desc = "Prev diagnostic" })
 end
 
 if TeaVim.features.debug then
