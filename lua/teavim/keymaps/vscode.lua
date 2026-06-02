@@ -87,6 +87,12 @@ if TeaVim.features.terminal then
   map("n",          "<leader>tf",   "<cmd>ToggleTerm direction=float<cr>",     { desc = "Float terminal" })
   map("n",          "<leader>th",   "<cmd>ToggleTerm direction=horizontal<cr>",{ desc = "Horizontal terminal" })
   map("n",          "<leader>tv",   "<cmd>ToggleTerm direction=vertical<cr>",  { desc = "Vertical terminal" })
+  map("n",          "<leader>tn",   function()
+    local terms = require("toggleterm.terminal").get_all(true)
+    local max = 0
+    for _, t in ipairs(terms) do if t.id > max then max = t.id end end
+    vim.cmd((max + 1) .. "ToggleTerm direction=float")
+  end, { desc = "New terminal" })
   map("t",          "<Esc><Esc>",   "<C-\\><C-n>",                             { desc = "Exit terminal mode" })
 end
 

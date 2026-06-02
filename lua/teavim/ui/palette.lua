@@ -42,6 +42,12 @@ local function teavim_commands()
 
   if TeaVim.features.terminal then
     vim.list_extend(cmds, {
+      { name = "Terminal: New",               action = function()
+          local terms = require("toggleterm.terminal").get_all(true)
+          local max = 0
+          for _, t in ipairs(terms) do if t.id > max then max = t.id end end
+          vim.cmd((max + 1) .. "ToggleTerm direction=float")
+        end },
       { name = "Terminal: Toggle Float",      action = function() vim.cmd("ToggleTerm direction=float") end },
       { name = "Terminal: Toggle Horizontal", action = function() vim.cmd("ToggleTerm direction=horizontal") end },
       { name = "Terminal: Toggle Vertical",   action = function() vim.cmd("ToggleTerm direction=vertical") end },
