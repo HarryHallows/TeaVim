@@ -12,7 +12,12 @@ map("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
 -- ── Buffer navigation ─────────────────────────────────────────────────────────
 map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
 map("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Next buffer" })
-map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
+map("n", "<leader>bd", function()
+  -- Switch to another buffer first so the window stays open.
+  local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+  if #bufs > 1 then vim.cmd("bprevious") end
+  vim.cmd("bdelete #")
+end, { desc = "Delete buffer" })
 
 -- ── Misc quality-of-life ──────────────────────────────────────────────────────
 map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })

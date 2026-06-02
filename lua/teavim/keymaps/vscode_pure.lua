@@ -25,7 +25,11 @@ map({ "n", "v" }, "<C-x>",    '"+d',                  { desc = "Cut" })
 map({ "n", "i" }, "<C-v>",    '<Esc>"+pa',            { desc = "Paste" })
 map({ "n", "i" }, "<C-a>",    "<Esc>ggVG",            { desc = "Select all" })
 map({ "n", "i" }, "<C-n>",    "<cmd>enew<cr>",        { desc = "New file" })
-map({ "n", "i" }, "<C-w>",    "<cmd>bdelete<cr>",     { desc = "Close buffer" })
+map({ "n", "i" }, "<C-w>", function()
+  local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+  if #bufs > 1 then vim.cmd("bprevious") end
+  vim.cmd("bdelete #")
+end, { desc = "Close buffer" })
 map({ "n", "i" }, "<C-\\>",   "<cmd>vsplit<cr>",      { desc = "Split right" })
 
 -- Delete word backwards (Ctrl+Backspace)

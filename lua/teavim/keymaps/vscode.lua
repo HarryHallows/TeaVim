@@ -41,7 +41,11 @@ map("v", "<C-/>", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.v
   { desc = "Toggle comment (selection)" })
 
 -- Close tab / buffer (Ctrl+W)
-map({ "n", "i" }, "<C-w>",     "<cmd>bdelete<cr>",  { desc = "Close buffer" })
+map({ "n", "i" }, "<C-w>", function()
+  local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+  if #bufs > 1 then vim.cmd("bprevious") end
+  vim.cmd("bdelete #")
+end, { desc = "Close buffer" })
 
 -- Split editor (Ctrl+\)
 map("n", "<C-\\>", "<cmd>vsplit<cr>", { desc = "Split editor right" })
