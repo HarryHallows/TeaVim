@@ -18,6 +18,7 @@ M.config = {
     fuzzy     = true,   -- telescope : fuzzy find files, text, commands
     terminal  = true,   -- toggleterm: floating/split embedded terminal
     lsp       = true,   -- lspconfig + blink.cmp: language servers + completion
+    debug     = true,   -- nvim-dap + dap-ui: breakpoints and step-through debugging
   },
 
   -- Onboarding – shown on first launch, skipped on subsequent ones.

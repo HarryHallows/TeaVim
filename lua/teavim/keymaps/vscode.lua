@@ -131,6 +131,40 @@ if TeaVim.features.lsp then
   map("n", "[d",         vim.diagnostic.goto_prev,      { desc = "Prev diagnostic" })
 end
 
+if TeaVim.features.debug then
+  local dap   = function() return require("dap") end
+  local dapui = function() return require("dapui") end
+
+  -- VSCode-matching F-key workflow
+  map("n", "<F5>",    function() dap().continue() end,          { desc = "Debug: Continue / Start" })
+  map("n", "<F17>",   function() dap().terminate() end,         { desc = "Debug: Stop" })       -- Shift+F5
+  map("n", "<F10>",   function() dap().step_over() end,         { desc = "Debug: Step Over" })
+  map("n", "<F11>",   function() dap().step_into() end,         { desc = "Debug: Step Into" })
+  map("n", "<F23>",   function() dap().step_out() end,          { desc = "Debug: Step Out" })   -- Shift+F11
+  -- Ctrl+Shift+D: toggle debug panel (matches VSCode sidebar shortcut)
+  map({ "n", "i" }, "<C-S-d>", function() dapui().toggle() end, { desc = "Debug: Toggle UI" })
+  -- F9: toggle breakpoint (matches VSCode)
+  map("n", "<F9>",    function() dap().toggle_breakpoint() end,  { desc = "Debug: Toggle Breakpoint" })
+  map("n", "<F21>",   function()                                  -- Shift+F9: conditional breakpoint
+    dap().set_breakpoint(vim.fn.input("Breakpoint condition: "))
+  end, { desc = "Debug: Conditional Breakpoint" })
+
+  -- Leader debug group
+  map("n", "<leader>db", function() dap().toggle_breakpoint() end,  { desc = "Debug: Toggle Breakpoint" })
+  map("n", "<leader>dB", function()
+    dap().set_breakpoint(vim.fn.input("Breakpoint condition: "))
+  end, { desc = "Debug: Conditional Breakpoint" })
+  map("n", "<leader>dl", function()
+    dap().set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+  end, { desc = "Debug: Log Point" })
+  map("n", "<leader>dL", function() dap().clear_breakpoints() end,  { desc = "Debug: Clear All Breakpoints" })
+  map("n", "<leader>du", function() dapui().toggle() end,           { desc = "Debug: Toggle UI" })
+  map("n", "<leader>de", function() dapui().eval() end,             { desc = "Debug: Eval expression" })
+  map("v", "<leader>de", function() dapui().eval() end,             { desc = "Debug: Eval selection" })
+  map("n", "<leader>dr", function() dap().repl.open() end,          { desc = "Debug: Open REPL" })
+  map("n", "<leader>dR", function() dap().run_last() end,           { desc = "Debug: Run Last" })
+end
+
 -- Git (gitsigns + source control modal)
 map({ "n", "i" }, "<C-S-g>", function() require("teavim.ui.git").open() end, { desc = "Source control" })
 map("n", "<leader>gs", function() require("teavim.ui.git").open() end,        { desc = "Source control" })

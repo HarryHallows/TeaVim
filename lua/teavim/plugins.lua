@@ -124,6 +124,30 @@ if cfg.features.lsp then
   })
 end
 
+if cfg.features.debug then
+  table.insert(specs, {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      -- Debug UI panel
+      { "rcarriga/nvim-dap-ui", dependencies = { "nvim-neotest/nvim-nio" } },
+      -- Inline variable values while stepping
+      "theHamsta/nvim-dap-virtual-text",
+      -- Language-specific adapters (installed via Mason)
+      "mfussenegger/nvim-dap-python",
+      -- Mason integration: auto-install DAP adapters
+      "jay-babu/mason-nvim-dap.nvim",
+    },
+    config = function()
+      require("mason-nvim-dap").setup({
+        ensure_installed = { "debugpy", "js-debug-adapter", "delve", "codelldb" },
+        automatic_installation = true,
+        handlers = {},
+      })
+      require("teavim.features.debug")
+    end,
+  })
+end
+
 -- ── User-defined extra plugins ────────────────────────────────────────────────
 local ok, user_plugins = pcall(require, "user.plugins")
 if ok and user_plugins then

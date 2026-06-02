@@ -57,6 +57,27 @@ local function teavim_commands()
     })
   end
 
+  if TeaVim.features.debug then
+    vim.list_extend(cmds, {
+      { name = "Debug: Continue / Start",      action = function() require("dap").continue() end },
+      { name = "Debug: Stop",                  action = function() require("dap").terminate() end },
+      { name = "Debug: Step Over",             action = function() require("dap").step_over() end },
+      { name = "Debug: Step Into",             action = function() require("dap").step_into() end },
+      { name = "Debug: Step Out",              action = function() require("dap").step_out() end },
+      { name = "Debug: Toggle Breakpoint",     action = function() require("dap").toggle_breakpoint() end },
+      { name = "Debug: Conditional Breakpoint",action = function()
+          require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+        end },
+      { name = "Debug: Log Point",             action = function()
+          require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+        end },
+      { name = "Debug: Clear All Breakpoints", action = function() require("dap").clear_breakpoints() end },
+      { name = "Debug: Toggle UI",             action = function() require("dapui").toggle() end },
+      { name = "Debug: Open REPL",             action = function() require("dap").repl.open() end },
+      { name = "Debug: Run Last",              action = function() require("dap").run_last() end },
+    })
+  end
+
   if TeaVim.features.fuzzy then
     vim.list_extend(cmds, {
       { name = "Find: Files",            action = function() vim.cmd("Telescope find_files") end },
