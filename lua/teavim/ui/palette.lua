@@ -93,7 +93,7 @@ function M.open()
         }
       end,
     }),
-    sorter = conf.generic_sorter({}),
+    sorter = require("telescope.sorters").empty(),
     attach_mappings = function(buf, map)
       actions.select_default:replace(function()
         actions.close(buf)
