@@ -44,6 +44,7 @@ local function teavim_commands()
 
   if TeaVim.features.terminal then
     vim.list_extend(cmds, {
+      { name = "Terminal: Manager",           action = function() require("teavim.ui.terminal").toggle() end },
       { name = "Terminal: New",               action = function()
           local terms = require("toggleterm.terminal").get_all(true)
           local max = 0
@@ -68,6 +69,7 @@ local function teavim_commands()
   end
 
   vim.list_extend(cmds, {
+    { name = "Git: Source Control",  action = function() require("teavim.ui.git").open() end },
     { name = "Buffer: Delete",       action = function() vim.cmd("bdelete") end },
     { name = "Buffer: Next",         action = function() vim.cmd("bnext") end },
     { name = "Buffer: Previous",     action = function() vim.cmd("bprevious") end },
