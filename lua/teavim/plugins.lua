@@ -91,6 +91,7 @@ if cfg.features.fuzzy then
     "nvim-telescope/telescope.nvim", tag = "0.1.8",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
     config = function() require("teavim.features.fuzzy") end,

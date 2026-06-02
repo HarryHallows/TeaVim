@@ -1,5 +1,5 @@
 local alpha = require("alpha")
-local theme = require("alpha.themes.theta")
+local dashboard = require("alpha.themes.dashboard")
 
 -- 3D-angled teacup art
 local art = {
@@ -34,8 +34,8 @@ local title = {
 }
 
 local function button(sc, txt, cmd)
-  local b = theme.button(sc, txt, cmd)
-  b.opts.hl       = "TeaVimButton"
+  local b = dashboard.button(sc, txt, cmd)
+  b.opts.hl          = "TeaVimButton"
   b.opts.hl_shortcut = "TeaVimShortcut"
   return b
 end
