@@ -9,6 +9,11 @@ telescope.setup({
     borderchars     = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
     layout_strategy = "horizontal",
     layout_config   = { preview_width = 0.55, width = 0.87, height = 0.80 },
+    -- Use vim syntax highlighting in previewer instead of treesitter to avoid
+    -- ft_to_lang errors on files whose treesitter parser isn't installed.
+    preview = {
+      treesitter = false,
+    },
     mappings = {
       i = {
         ["<C-j>"]   = actions.move_selection_next,
