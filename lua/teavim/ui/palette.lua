@@ -26,6 +26,8 @@ local function teavim_commands()
     vim.list_extend(cmds, {
       { name = "LSP: Open Mason",      action = function() vim.cmd("Mason") end },
       { name = "LSP: Info",            action = function() vim.cmd("LspInfo") end },
+      { name = "LSP: Restart",         action = function() vim.cmd("LspRestart") end },
+      { name = "LSP: Stop",            action = function() vim.cmd("LspStop") end },
       { name = "LSP: Format File",     action = function() vim.lsp.buf.format() end },
       { name = "LSP: Rename Symbol",   action = function() vim.lsp.buf.rename() end },
       { name = "LSP: Code Action",     action = function() vim.lsp.buf.code_action() end },

@@ -39,7 +39,8 @@ map("n", "N",     "Nzzzv",   { desc = "Prev search result (centred)" })
 map("x", "<leader>p", [["_dP]], { desc = "Paste without yank" })
 
 -- ── Lazy plugin manager ───────────────────────────────────────────────────────
-map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Open Lazy plugin manager" })
+map("n", "<leader>L",  "<cmd>Lazy<cr>",       { desc = "Open Lazy plugin manager" })
+map("n", "<leader>lR", "<cmd>LspRestart<cr>", { desc = "Restart LSP" })
 
 -- ── Onboarding re-run ─────────────────────────────────────────────────────────
 map("n", "<leader>?", function()
