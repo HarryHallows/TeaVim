@@ -48,5 +48,11 @@ else
 fi
 
 # ── Delegate to the local install script ─────────────────────────────────────
+# Re-attach stdin to /dev/tty so install.sh can prompt interactively even
+# when this script is piped from curl (which replaces stdin with the pipe).
 echo ""
-bash "$INSTALL_DIR/install.sh" "$@"
+if [[ -t 0 ]]; then
+  bash "$INSTALL_DIR/install.sh" "$@"
+else
+  bash "$INSTALL_DIR/install.sh" "$@" </dev/tty
+fi

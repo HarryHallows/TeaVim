@@ -8,6 +8,14 @@
 
 set -euo pipefail
 
+# When stdin is not a TTY (e.g. piped from curl), interactive prompts would
+# hang or receive empty input. Detect this and use defaults throughout.
+if [[ -t 0 ]]; then
+  INTERACTIVE=true
+else
+  INTERACTIVE=false
+fi
+
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
 BACKUP_DIR="$HOME/.config/nvim.bak.$(date +%Y%m%d_%H%M%S)"
@@ -51,8 +59,13 @@ echo "  ✓  Neovim $NVIM_VERSION"
 echo ""
 if [[ -d "$CONFIG_DIR" ]]; then
   if [[ "$FORCE" == false ]]; then
-    read -r -p "  Existing Neovim config found. Back it up? [Y/n] " answer
-    answer="${answer:-Y}"
+    if [[ "$INTERACTIVE" == true ]]; then
+      read -r -p "  Existing Neovim config found. Back it up? [Y/n] " answer
+      answer="${answer:-Y}"
+    else
+      answer="Y"
+      echo "  Existing Neovim config found. Backing up automatically (non-interactive mode)."
+    fi
     if [[ "$answer" =~ ^[Yy] ]]; then
       mv "$CONFIG_DIR" "$BACKUP_DIR"
       echo "  Backed up to: $BACKUP_DIR"
@@ -76,8 +89,13 @@ if [[ "$REPO_DIR" == "$REMOTE_INSTALL_DIR" ]]; then
   echo "  Symlinked: $CONFIG_DIR → $REPO_DIR"
   echo "  (Updates via:  git -C $REPO_DIR pull)"
 else
-  read -r -p "  Symlink config (recommended) or copy? [S/c] " link_answer
-  link_answer="${link_answer:-S}"
+  if [[ "$INTERACTIVE" == true ]]; then
+    read -r -p "  Symlink config (recommended) or copy? [S/c] " link_answer
+    link_answer="${link_answer:-S}"
+  else
+    link_answer="S"
+    echo "  Symlinking config (non-interactive mode)."
+  fi
 
   if [[ "$link_answer" =~ ^[Cc] ]]; then
     cp -r "$REPO_DIR" "$CONFIG_DIR"
@@ -95,8 +113,14 @@ echo "    1) vscode       — Vim modes + VSCode shortcuts layered on top (defau
 echo "    2) vscode_pure  — Modal-less, feels like a normal text editor"
 echo "    3) vim          — Pure Vim motions, no VSCode shortcuts"
 echo ""
-read -r -p "  Profile [1]: " profile_choice
-profile_choice="${profile_choice:-1}"
+if [[ "$INTERACTIVE" == true ]]; then
+  read -r -p "  Profile [1]: " profile_choice
+  profile_choice="${profile_choice:-1}"
+else
+  profile_choice="1"
+  echo "  Defaulting to profile: vscode (non-interactive mode)."
+  echo "  Change anytime: edit ~/.config/nvim/lua/user/config.lua"
+fi
 
 case "$profile_choice" in
   2) PROFILE="vscode_pure" ;;

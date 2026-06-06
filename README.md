@@ -53,15 +53,17 @@ Always included: statusline (lualine), dashboard (alpha), shortcuts panel (which
 
 ## Install
 
-### One-liner (recommended)
+### One-liner
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/HarryHallows/TeaVim/main/remote-install.sh | bash
 ```
 
-This clones TeaVim to `~/.local/share/teavim`, symlinks it as your Neovim config, backs up any existing config, and lets you pick your profile interactively. On first launch, lazy.nvim installs all plugins automatically.
+This clones TeaVim to `~/.local/share/teavim`, symlinks it as your Neovim config, backs up any existing config, and sets your profile. On first launch, lazy.nvim installs all plugins automatically.
 
-### Manual
+> **WSL2 / no-TTY note:** If the one-liner hangs or errors on the interactive prompts, use the manual steps below instead — they run the installer directly with a proper TTY.
+
+### Manual (recommended for WSL2)
 
 ```bash
 git clone --depth=1 https://github.com/HarryHallows/TeaVim.git ~/.local/share/teavim

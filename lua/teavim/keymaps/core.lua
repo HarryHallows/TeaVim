@@ -53,6 +53,11 @@ map("n", "<leader>?", function()
   require("teavim.onboarding").start(true)
 end, { desc = "Open TeaVim onboarding" })
 
+-- ── Cheatsheet ────────────────────────────────────────────────────────────────
+map("n", "<leader>K", function()
+  require("teavim.ui.cheatsheet").open()
+end, { desc = "Keymap cheatsheet" })
+
 -- ── User keymaps (loaded last, always wins) ───────────────────────────────────
 pcall(require, "user.keymaps")
 
